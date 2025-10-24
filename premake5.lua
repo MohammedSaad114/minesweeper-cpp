@@ -119,7 +119,6 @@ end
 
 
 workspace (workspaceName)
-    location "build/VisualStudio2022"
     configurations { "Debug", "Release"}
     platforms { "x64", "x86", "ARM64"}
 
@@ -154,7 +153,6 @@ if (downloadRaylib) then
 
     project (workspaceName)
         kind "ConsoleApp"
-        location "build_files/"
         targetdir "bin/%{cfg.buildcfg}"
 
         filter {"system:windows", "configurations:Release", "action:gmake*"}
