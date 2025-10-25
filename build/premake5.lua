@@ -102,8 +102,8 @@ end
 downloadRaylib = true
 raylib_dir = "external/raylib-master"
 
-workspaceName = 'minesweeper-cpp'
-baseName = path.getbasename(os.getcwd())
+workspaceName = 'MyGame'
+baseName = path.getbasename(path.getdirectory(os.getcwd()));
 
 --if (baseName ~= 'raylib-quickstart') then
     workspaceName = baseName
@@ -119,6 +119,7 @@ end
 
 
 workspace (workspaceName)
+    location "../"
     configurations { "Debug", "Release"}
     platforms { "x64", "x86", "ARM64"}
 
@@ -153,7 +154,8 @@ if (downloadRaylib) then
 
     project (workspaceName)
         kind "ConsoleApp"
-        targetdir "bin/%{cfg.buildcfg}"
+       
+        targetdir "../bin/%{cfg.buildcfg}"
 
         filter {"system:windows", "configurations:Release", "action:gmake*"}
             kind "WindowedApp"
@@ -164,25 +166,26 @@ if (downloadRaylib) then
             entrypoint "mainCRTStartup"
 
         filter "action:vs*"
-            debugdir "$(SolutionDir)..\\"
+            debugdir "$(SolutionDir)"
 
         filter{}
 
         vpaths 
         {
-            ["Header Files/*"] = { "include/**.h",  "include/**.hpp", "src/**.h", "src/**.hpp"},
-            ["Source Files/*"] = {"src/**.c", "src/**.cpp"},
-            ["Windows Resource Files/*"] = {"src/**.rc", "src/**.ico"},
+            ["Header Files/*"] = { "../include/**.h",  "../include/**.hpp", "../src/**.h", "../src/**.hpp"},
+            ["Source Files/*"] = {"../src/**.c", "src/**.cpp"},
+            ["Windows Resource Files/*"] = {"../src/**.rc", "src/**.ico"},
         }
         
-        files {"src/**.c", "src/**.cpp", "src/**.h", "src/**.hpp", "include/**.h", "include/**.hpp"}
+        files {"../src/**.c", "../src/**.cpp", "../src/**.h", "../src/**.hpp", "../include/**.h", "../include/**.hpp"}
         
         filter {"system:windows", "action:vs*"}
             files {"../src/*.rc", "../src/*.ico"}
 
         filter{}
         
-        includedirs { "src" , "include"}
+        includedirs { "../src" }
+        includedirs { "../include" }
 
         links {"raylib"}
 
@@ -205,7 +208,7 @@ if (downloadRaylib) then
         filter "system:windows"
             defines{"_WIN32"}
             links {"winmm", "gdi32", "opengl32"}
-            libdirs {"../../bin/%{cfg.buildcfg}"}
+            libdirs {"../bin/%{cfg.buildcfg}"}
 
         filter "system:linux"
             links {"pthread", "m", "dl", "rt", "X11"}
@@ -224,7 +227,7 @@ if (downloadRaylib) then
         location "build_files/"
 
         language "C"
-        targetdir "bin/%{cfg.buildcfg}"
+        targetdir "../bin/%{cfg.buildcfg}"
 
         filter "action:vs*"
             defines{"_WINSOCK_DEPRECATED_NO_WARNINGS", "_CRT_SECURE_NO_WARNINGS"}
